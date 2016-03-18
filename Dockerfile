@@ -2,10 +2,14 @@ FROM golang
 
 RUN mkdir /go/src/threatcache
 
-ADD threatcache.go /go/src/threatcache/threatcache.go
+ADD *.go /go/src/threatcache/
 RUN go get threatcache
 RUN go install threatcache
 
-ENTRYPOINT /go/bin/threatcache
+ENV IPADDR 0.0.0.0
+ENV PORT 8888
+ENV REDISHOST redis
+ENV REDISPORT 6379
 
-EXPOSE 8888
+EXPOSE ${PORT}
+CMD /go/bin/threatcache -ipaddr ${IPADDR} -port ${PORT} -redishost ${REDISHOST} -redisport ${REDISPORT}
